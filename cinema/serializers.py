@@ -40,9 +40,7 @@ class MovieSerializer(serializers.ModelSerializer):
             "duration",
             "genres",
             "actors",
-            "image"
         )
-        read_only_fields = ("id", "image")
 
 
 class MovieListSerializer(MovieSerializer):
@@ -52,6 +50,10 @@ class MovieListSerializer(MovieSerializer):
     actors = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="full_name"
     )
+
+    class Meta:
+        model = Movie
+        fields = MovieSerializer.Meta.fields + ("image",)
 
 
 class MovieDetailSerializer(MovieSerializer):
@@ -75,7 +77,7 @@ class MovieDetailSerializer(MovieSerializer):
 class MovieUploadImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ("image",)
+        fields = ("id", "image",)
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
